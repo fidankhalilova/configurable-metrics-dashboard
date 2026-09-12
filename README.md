@@ -9,17 +9,14 @@ A React + TypeScript dashboard where users add, remove, reorder, and hide metric
 - Tailwind CSS
 - **@dnd-kit** (`@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/utilities`) for drag-and-drop — chosen over `react-beautiful-dnd` per the spec's own recommendation, since that library is unmaintained and has a known incompatibility with React 18 StrictMode.
 
-## Must-have features
+## Features
 
 - **Add/Remove Cards** — `CardManagerPanel` lists every card in the catalog; not-yet-added cards show an "+ Add" button, added cards show hide/show and remove controls.
 - **Reorder via Drag-and-Drop** — `CardGrid` wraps visible cards in a dnd-kit `SortableContext`. Dragging is done via a dedicated handle icon on each card (not the whole card body), so drag never conflicts with a card's own interactive elements (e.g. its Retry button).
 - **Persistent Layout** — the full state (theme, layout order, hidden list) is saved to `localStorage` automatically on every change.
-
-## Bonus features
-
-- ✅ **Theming (dark/light/system)** — CSS custom properties, a blocking inline bootstrap script to prevent a flash of the wrong theme on load, and a live `matchMedia` listener that keeps following the OS while `system` mode is active.
-- ❌ **Resizing cards** — not implemented; cards are a fixed size in the responsive grid.
-- ⚠️ **Animation during drag** — dnd-kit provides a default transform-based drag animation out of the box (visible in `SortableCard`'s `transform`/`transition` styling); no additional custom animation was layered on top.
+- **Theming (dark/light/system)** — CSS custom properties, a blocking inline bootstrap script to prevent a flash of the wrong theme on load, and a live `matchMedia` listener that keeps following the OS while `system` mode is active.
+- **Resizing cards** — implemented; cards are resizable in the responsive grid.
+- **Animation during drag** — dnd-kit provides a default transform-based drag animation out of the box (visible in `SortableCard`'s `transform`/`transition` styling); no additional custom animation was layered on top.
 
 ## State structure
 
@@ -32,7 +29,6 @@ A React + TypeScript dashboard where users add, remove, reorder, and hide metric
 }
 ```
 
-This matches the spec's literal example shape. `layout` is an ordered list of visible card ids; `hidden` holds ids that exist but aren't shown. A card id absent from both arrays has never been added. Card *content* (title, icon, mock-value range) is intentionally kept separate, in `cardCatalog.ts` — reordering or hiding a card never touches its definition.
 
 ## How persistence works
 
