@@ -21,42 +21,6 @@ A React + TypeScript dashboard where users add, remove, reorder, and hide metric
 - ❌ **Resizing cards** — not implemented; cards are a fixed size in the responsive grid.
 - ⚠️ **Animation during drag** — dnd-kit provides a default transform-based drag animation out of the box (visible in `SortableCard`'s `transform`/`transition` styling); no additional custom animation was layered on top.
 
-## Architecture
-
-src/
-state/
-types.ts — AppState shape: { version, theme, layout, hidden }
-defaults.ts — fallback state (some cards visible, some hidden, by default)
-validateState.ts — field-by-field validator for parsed JSON (used on load AND on import)
-storage.ts — the only file that touches localStorage; versioned, try/catch, validated
-reducer.ts — every state transition, one switch statement
-StateContext.tsx — useReducer + context; syncs data-theme, meta theme-color, live system-theme listener
-features/
-metric-cards/
-cardCatalog.ts — static list of all possible cards (id, title, icon, mock value range)
-mockApi.ts — simulated fetch, ~15% random failure rate
-useMetricData.ts — per-card loading/error/retry hook, local state only, never persisted
-MetricCard.tsx — renders one card's three visual states
-SortableCard.tsx — wraps MetricCard with a dnd-kit drag handle
-CardGrid.tsx — the sortable grid + drag-end handler + empty state
-CardManagerPanel.tsx — add / remove / show / hide controls
-theme/
-ThemeToggle.tsx — cycles light → dark → system
-sidebar/
-TopNav.tsx — simple top navigation (this spec doesn't require a collapsible sidebar)
-debug/
-DebugPanel.tsx — export/import state as a validated JSON file
-app/
-App.tsx — shell: TopNav + routed pages
-Loader.tsx — initial loading state shown while state hydrates
-routes/
-DashboardPage.tsx — CardManagerPanel + DebugPanel + CardGrid
-SettingsPage.tsx — static, UI-only settings (not wired to real logic)
-NotFoundPage.tsx
-theme.css — light/dark CSS variable tokens, reduced-motion rule
-index.html — blocking inline theme-bootstrap script + <meta name="theme-color">
-
-
 ## State structure
 
 ```json
